@@ -8,25 +8,20 @@ package org.jetbrains.kotlin.idea.debugger.coroutine.view
 import com.intellij.debugger.impl.DebuggerUtilsEx
 import com.intellij.debugger.settings.ThreadsViewSettings
 import com.intellij.icons.AllIcons
-import com.intellij.ide.highlighter.JavaHighlightingColors
-import com.intellij.openapi.editor.DefaultLanguageHighlighterColors
+import com.intellij.icons.AllIcons.General.Information
 import com.intellij.openapi.editor.HighlighterColors
-import com.intellij.openapi.editor.colors.CodeInsightColors
-import com.intellij.openapi.editor.colors.EditorColors
 import com.intellij.openapi.editor.colors.TextAttributesKey
-import com.intellij.openapi.editor.markup.TextAttributes
 import com.intellij.ui.ColoredTextContainer
 import com.intellij.ui.SimpleColoredComponent
 import com.intellij.ui.SimpleTextAttributes
 import com.intellij.xdebugger.frame.presentation.XValuePresentation
 import com.intellij.xdebugger.impl.ui.DebuggerUIUtil
 import com.intellij.xdebugger.impl.ui.XDebuggerUIConstants
-import com.intellij.xdebugger.ui.DebuggerColors
 import com.sun.jdi.Location
 import com.sun.jdi.ReferenceType
+import org.jetbrains.kotlin.idea.KotlinBundle
 import org.jetbrains.kotlin.idea.debugger.coroutine.data.CoroutineInfoData
 import org.jetbrains.kotlin.idea.debugger.coroutine.util.logger
-import java.awt.Color
 import javax.swing.Icon
 
 class SimpleColoredTextIcon(val icon: Icon?, val hasChildrens: Boolean) {
@@ -180,10 +175,10 @@ class SimpleColoredTextIconPresentationRenderer {
         SimpleColoredTextIcon(AllIcons.Debugger.ThreadSuspended, true, "Creation stack frame of ${infoData.name}")
 
     fun renderErrorNode(error: String) =
-        SimpleColoredTextIcon(AllIcons.Actions.Lightning,false, error)
+        SimpleColoredTextIcon(AllIcons.Actions.Lightning,false, KotlinBundle.message(error))
 
-    fun renderRoorNode(text: String) =
-        SimpleColoredTextIcon(null, true, text)
+    fun renderInfoNode(text: String) =
+        SimpleColoredTextIcon(AllIcons.General.Information, false, KotlinBundle.message(text))
 
     fun renderGroup(groupName: String) =
         SimpleColoredTextIcon(AllIcons.Debugger.ThreadGroup,true, groupName)

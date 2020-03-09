@@ -1,10 +1,11 @@
 /*
- * Copyright 2010-2019 JetBrains s.r.o. and Kotlin Programming Language contributors.
+ * Copyright 2010-2020 JetBrains s.r.o. and Kotlin Programming Language contributors.
  * Use of this source code is governed by the Apache 2.0 license that can be found in the license/LICENSE.txt file.
  */
 
 package org.jetbrains.kotlin.idea.debugger.coroutine.data
 
+import com.intellij.debugger.engine.DebugProcessImpl
 import com.intellij.debugger.jdi.StackFrameProxyImpl
 import com.intellij.debugger.memory.utils.StackFrameItem
 import com.intellij.debugger.ui.impl.watch.MethodsTracker
@@ -13,9 +14,11 @@ import com.intellij.xdebugger.frame.XNamedValue
 import com.intellij.xdebugger.frame.XStackFrame
 import com.sun.jdi.Location
 import com.sun.jdi.ObjectReference
-import org.jetbrains.kotlin.idea.debugger.*
-import org.jetbrains.kotlin.idea.debugger.coroutine.util.EmptyStackFrameDescriptor
 import org.jetbrains.kotlin.idea.debugger.coroutine.util.logger
+import org.jetbrains.kotlin.idea.debugger.safeKotlinPreferredLineNumber
+import org.jetbrains.kotlin.idea.debugger.safeLineNumber
+import org.jetbrains.kotlin.idea.debugger.safeMethod
+import org.jetbrains.kotlin.idea.debugger.safeSourceName
 
 class CreationCoroutineStackFrameItem(
     val frame: StackFrameProxyImpl,
@@ -53,7 +56,27 @@ class RestoredCoroutineStackFrameItem(
 }
 
 class DefaultCoroutineStackFrameItem(location: Location, spilledVariables: List<XNamedValue>) :
-    CoroutineStackFrameItem(location, spilledVariables)
+    CoroutineStackFrameItem(location, spilledVariables) {
+
+    override fun createFrame(debugProcess: DebugProcessImpl): CapturedStackFrame {
+        return CoroutineStackFrame(debugProcess, this)
+    }
+}
+
+class AfterCoroutineStackFrameItem(val frame: StackFrameProxyImpl, spilledVariables: List<XNamedValue> = emptyList()) :
+    CoroutineStackFrameItem(frame.location(), spilledVariables) {
+
+    override fun createFrame(debugProcess: DebugProcessImpl): CapturedStackFrame {
+        return CoroutineStackFrame(debugProcess, this)
+    }
+}
+
+class CoroutineStackFrame(debugProcess: DebugProcessImpl, item: StackFrameItem) : StackFrameItem.CapturedStackFrame(debugProcess, item) {
+    override fun getCaptionAboveOf() = "CoroutineExit"
+
+    override fun hasSeparatorAbove(): Boolean =
+        false
+}
 
 sealed class CoroutineStackFrameItem(val location: Location, val spilledVariables: List<XNamedValue>) :
     StackFrameItem(location, spilledVariables) {
@@ -64,3 +87,6 @@ sealed class CoroutineStackFrameItem(val location: Location, val spilledVariable
                 location.safeLineNumber() + ":" + location.safeKotlinPreferredLineNumber()
     }
 }
+
+class EmptyStackFrameDescriptor(val frame: StackTraceElement, proxy: StackFrameProxyImpl) :
+    StackFrameDescriptorImpl(proxy, MethodsTracker())

@@ -15,9 +15,7 @@ import com.sun.jdi.ThreadReference
 data class CoroutineInfoData(
     val name: String,
     val state: State,
-
     val stackTrace: List<StackTraceElement>,
-    // links to jdi.* references
     val activeThread: ThreadReference? = null, // for suspended coroutines should be null
     val lastObservedFrameFieldRef: ObjectReference?
 ) {
