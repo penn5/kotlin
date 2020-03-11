@@ -198,6 +198,11 @@ public class FirDiagnosticsWithStdlibTestGenerated extends AbstractFirDiagnostic
         runTest("compiler/fir/resolve/testData/resolveWithStdlib/rangeTo.kt");
     }
 
+    @TestMetadata("receiverResolutionInLambda.kt")
+    public void testReceiverResolutionInLambda() throws Exception {
+        runTest("compiler/fir/resolve/testData/resolveWithStdlib/receiverResolutionInLambda.kt");
+    }
+
     @TestMetadata("recursiveBug.kt")
     public void testRecursiveBug() throws Exception {
         runTest("compiler/fir/resolve/testData/resolveWithStdlib/recursiveBug.kt");
