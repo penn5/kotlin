@@ -388,6 +388,11 @@ public class FirDiagnosticsTestGenerated extends AbstractFirDiagnosticsTest {
         runTest("compiler/fir/resolve/testData/resolve/whenInference.kt");
     }
 
+    @TestMetadata("whenWithSealedArgumentAsReceiverForScopeFunctions.kt")
+    public void testWhenWithSealedArgumentAsReceiverForScopeFunctions() throws Exception {
+        runTest("compiler/fir/resolve/testData/resolve/whenWithSealedArgumentAsReceiverForScopeFunctions.kt");
+    }
+
     @TestMetadata("compiler/fir/resolve/testData/resolve/arguments")
     @TestDataPath("$PROJECT_ROOT")
     @RunWith(JUnit3RunnerWithInners.class)

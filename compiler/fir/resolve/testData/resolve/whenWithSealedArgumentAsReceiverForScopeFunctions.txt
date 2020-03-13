@@ -1,0 +1,135 @@
+FILE: whenWithSealedArgumentAsReceiverForScopeFunctions.kt
+    public final fun Case1(arg: R|SealedClass?|): R|kotlin/Unit| {
+        lval case1_1: R|kotlin/Nothing?| = when (R|<local>/arg|) {
+            ==($subj$, Null(null)) || ==($subj$, Q|SealedClass.Object2|) ->  {
+                Null(null)
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                R|/xNull|
+            }
+        }
+        ?.R|kotlin/let|<R|kotlin/Unit|, R|kotlin/Nothing|>(<L> = let@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Nothing| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markPsi]>#(R|<local>/it|)
+        }
+        )
+        lval case1_2: R|kotlin/Nothing?| = when (R|<local>/arg|) {
+            ==($subj$, Null(null)) || ==($subj$, Q|SealedClass.Object2|) ->  {
+                Null(null)
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                String()
+            }
+        }
+        ?.R|kotlin/let|<R|kotlin/Unit|, R|kotlin/Nothing|>(<L> = let@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Nothing| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markString]>#(R|<local>/it|)
+        }
+        )
+    }
+    public final fun Case2(arg: R|SealedClass|): R|kotlin/Unit| {
+        lval case2_1: R|kotlin/Nothing| = when (R|<local>/arg|) {
+            ==($subj$, Q|SealedClass.Object2|) ->  {
+                R|/xNotNull|
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                R|/xNotNull|
+            }
+        }
+        .R|kotlin/let|<R|kotlin/Unit|, R|kotlin/Nothing|>(<L> = let@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Nothing| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markPsi]>#(R|<local>/it|)
+        }
+        )
+        lval case2_2: R|kotlin/Nothing| = when (R|<local>/arg|) {
+            ==($subj$, Q|SealedClass.Object2|) ->  {
+                String(wef)
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                String()
+            }
+        }
+        .R|kotlin/let|<R|kotlin/Unit|, R|kotlin/Nothing|>(<L> = let@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Nothing| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markString]>#(R|<local>/it|)
+        }
+        )
+    }
+    public final fun Case4(arg: R|SealedClass?|): R|kotlin/Unit| {
+        lval case1_1: R|kotlin/Unit?| = when (R|<local>/arg|) {
+            ==($subj$, Null(null)) || ==($subj$, Q|SealedClass.Object2|) ->  {
+                Null(null)
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                R|/xNull|
+            }
+        }
+        ?.R|kotlin/also|<R|kotlin/Unit|>(<L> = also@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Unit| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markPsi]>#(R|<local>/it|)
+        }
+        )
+        lval case1_2: R|kotlin/Unit?| = when (R|<local>/arg|) {
+            ==($subj$, Null(null)) || ==($subj$, Q|SealedClass.Object2|) ->  {
+                Null(null)
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                String()
+            }
+        }
+        ?.R|kotlin/also|<R|kotlin/Unit|>(<L> = also@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Unit| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markString]>#(R|<local>/it|)
+        }
+        )
+    }
+    public final fun Case3(arg: R|SealedClass|): R|kotlin/Unit| {
+        lval case2_1: R|kotlin/Unit| = when (R|<local>/arg|) {
+            ==($subj$, Q|SealedClass.Object2|) ->  {
+                R|/xNotNull|
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                R|/xNotNull|
+            }
+        }
+        .R|kotlin/also|<R|kotlin/Unit|>(<L> = also@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Unit| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markPsi]>#(R|<local>/it|)
+        }
+        )
+        lval case2_2: R|kotlin/Unit| = when (R|<local>/arg|) {
+            ==($subj$, Q|SealedClass.Object2|) ->  {
+                String(wef)
+            }
+            ==($subj$, Q|SealedClass.Object1|) ->  {
+                String()
+            }
+        }
+        .R|kotlin/also|<R|kotlin/Unit|>(<L> = also@fun <anonymous>(it: R|kotlin/Unit|): R|kotlin/Unit| <kind=EXACTLY_ONCE>  {
+            ^ <Inapplicable(INAPPLICABLE): [/markString]>#(R|<local>/it|)
+        }
+        )
+    }
+    public final fun markPsi(element: R|CustomClass|): R|kotlin/Unit| {
+    }
+    public final fun markString(element: R|kotlin/String|): R|kotlin/Unit| {
+    }
+    public sealed class SealedClass : R|kotlin/Any| {
+        private constructor(): R|SealedClass| {
+            super<R|kotlin/Any|>()
+        }
+
+        public final object Object1 : R|SealedClass| {
+            private constructor(): R|SealedClass.Object1| {
+                super<R|SealedClass|>()
+            }
+
+        }
+
+        public final object Object2 : R|SealedClass| {
+            private constructor(): R|SealedClass.Object2| {
+                super<R|SealedClass|>()
+            }
+
+        }
+
+    }
+    public abstract interface CustomClass : R|kotlin/Any| {
+    }
+    public final val xNull: R|CustomClass?| = R|kotlin/TODO|()
+        public get(): R|CustomClass?|
+    public final val xNotNull: R|CustomClass| = R|kotlin/TODO|()
+        public get(): R|CustomClass|
