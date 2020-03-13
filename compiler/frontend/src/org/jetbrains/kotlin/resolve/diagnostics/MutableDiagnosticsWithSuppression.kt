@@ -19,6 +19,7 @@ package org.jetbrains.kotlin.resolve.diagnostics
 import org.jetbrains.kotlin.diagnostics.Diagnostic
 import java.util.ArrayList
 import com.intellij.openapi.util.CompositeModificationTracker
+import com.intellij.openapi.util.ModificationTracker
 import com.intellij.util.CachedValueImpl
 import com.intellij.psi.util.CachedValueProvider
 import com.intellij.psi.PsiElement
@@ -37,18 +38,19 @@ class MutableDiagnosticsWithSuppression @JvmOverloads constructor(
         CachedValueProvider.Result(DiagnosticsWithSuppression(bindingContext, allDiagnostics), modificationTracker)
     })
 
-    private fun readonlyView(): DiagnosticsWithSuppression = cache.value!!
+    private val lazyModificationTracker = CachedValueImpl(CachedValueProvider {
+        CachedValueProvider.Result(CompositeModificationTracker(delegateDiagnostics.modificationTracker), ModificationTracker.NEVER_CHANGED)
+    })
 
-    override val modificationTracker by lazy(LazyThreadSafetyMode.PUBLICATION) {
-        CompositeModificationTracker(delegateDiagnostics.modificationTracker)
-    }
+    override val modificationTracker
+        get() = lazyModificationTracker.value
 
     override fun all(): Collection<Diagnostic> =
-        if (diagnosticList.isEmpty()) delegateDiagnostics.all() else readonlyView().all()
+        if (diagnosticList.isEmpty()) delegateDiagnostics.all() else cache.value!!.all()
     override fun forElement(psiElement: PsiElement) =
-        if (diagnosticList.isEmpty()) delegateDiagnostics.forElement(psiElement) else readonlyView().forElement(psiElement)
+        if (diagnosticList.isEmpty()) delegateDiagnostics.forElement(psiElement) else cache.value!!.forElement(psiElement)
     override fun noSuppression() =
-        if (diagnosticList.isEmpty()) delegateDiagnostics.noSuppression() else readonlyView().noSuppression()
+        if (diagnosticList.isEmpty()) delegateDiagnostics.noSuppression() else cache.value!!.noSuppression()
 
     //essential that this list is readonly
     fun getOwnDiagnostics(): List<Diagnostic> {
@@ -66,5 +68,5 @@ class MutableDiagnosticsWithSuppression @JvmOverloads constructor(
     }
 
     @TestOnly
-    fun getReadonlyView(): DiagnosticsWithSuppression = readonlyView()
+    fun getReadonlyView(): DiagnosticsWithSuppression = cache.value!!
 }

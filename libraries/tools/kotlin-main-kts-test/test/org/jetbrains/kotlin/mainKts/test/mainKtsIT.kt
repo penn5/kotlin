@@ -22,10 +22,17 @@ class MainKtsIT {
     }
 
     @Test
-    @Ignore // Fails on TC most likely due to repo proxying
     fun testKotlinxHtml() {
         runWithK2JVMCompilerAndMainKts(
             "$TEST_DATA_ROOT/kotlinx-html.main.kts",
+            listOf("<html>", "  <body>", "    <h1>Hello, World!</h1>", "  </body>", "</html>")
+        )
+    }
+
+    @Test
+    fun testKotlinShell() {
+        runWithK2JVMCompilerAndMainKts(
+            "$TEST_DATA_ROOT/kotlin-shell.main.kts",
             listOf("<html>", "  <body>", "    <h1>Hello, World!</h1>", "  </body>", "</html>")
         )
     }
