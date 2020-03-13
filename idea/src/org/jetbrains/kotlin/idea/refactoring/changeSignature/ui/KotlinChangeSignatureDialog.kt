@@ -39,7 +39,6 @@ import com.intellij.ui.EditorTextField
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.treeStructure.Tree
 import com.intellij.util.Consumer
-import com.intellij.util.IJSwingUtilities
 import com.intellij.util.ui.UIUtil
 import com.intellij.util.ui.table.JBTableRow
 import com.intellij.util.ui.table.JBTableRowEditor
@@ -333,7 +332,7 @@ class KotlinChangeSignatureDialog(
         if (myMethod.canChangeReturnType() == MethodDescriptor.ReadWriteOption.ReadWrite &&
             myReturnTypeCodeFragment.getTypeInfo(isCovariant = true, forPreview = false, reanalyse = true).type == null
         ) {
-            if (Messages.showOkCancelDialog(
+            if (showOkCancelDialog(
                     myProject,
                     "Return type '${myReturnTypeCodeFragment!!.text}' cannot be resolved.\nContinue?",
                     RefactoringBundle.message("changeSignature.refactoring.name"),
@@ -347,7 +346,7 @@ class KotlinChangeSignatureDialog(
         for (item in parametersTableModel.items) {
             if (item.typeCodeFragment.getTypeInfo(isCovariant = true, forPreview = false, reanalyse = true).type == null) {
                 val paramText = if (item.parameter != parametersTableModel.receiver) "parameter '${item.parameter.name}'" else "receiver"
-                if (Messages.showOkCancelDialog(
+                if (showOkCancelDialog(
                         myProject,
                         "Type '${item.typeCodeFragment.text}' for $paramText cannot be resolved.\nContinue?",
                         RefactoringBundle.message("changeSignature.refactoring.name"),

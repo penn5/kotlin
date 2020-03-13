@@ -20,7 +20,6 @@ import org.jetbrains.kotlin.psi.KtExpression
 import org.jetbrains.kotlin.psi.KtProperty
 import org.jetbrains.kotlin.psi.KtPsiFactory
 import javax.swing.JCheckBox
-import javax.swing.JComboBox
 import javax.swing.JComponent
 import javax.swing.JLabel
 import kotlin.properties.Delegates
@@ -30,7 +29,7 @@ class KotlinChangePropertySignatureDialog(
     private val methodDescriptor: KotlinMethodDescriptor,
     private val commandName: String?
 ) : RefactoringDialog(project, true) {
-    private val visibilityCombo = JComboBox(
+    private val visibilityCombo = ComboBox(
         arrayOf(Visibilities.INTERNAL, Visibilities.PRIVATE, Visibilities.PROTECTED, Visibilities.PUBLIC)
     )
     private val nameField = EditorTextField(methodDescriptor.name)
@@ -62,7 +61,7 @@ class KotlinChangePropertySignatureDialog(
 
         return with(FormBuilder.createFormBuilder()) {
             val baseDeclaration = methodDescriptor.baseDeclaration
-            if (!((baseDeclaration as? KtProperty)?.isLocal ?: false)) {
+            if ((baseDeclaration as? KtProperty)?.isLocal != true) {
                 visibilityCombo.selectedItem = methodDescriptor.visibility
                 addLabeledComponent("&Visibility: ", visibilityCombo)
             }
