@@ -190,7 +190,15 @@ class FirExpressionsResolveTransformer(transformer: FirBodyResolveTransformer) :
         block.transformStatementsIndexed(transformer) { index ->
             if (index == numberOfStatements - 1) data else ResolutionMode.ContextIndependent
         }
-        block.transformAllStatementsExceptLast(integerLiteralTypeApproximator, builtinTypes.intType.type)
+        if (data == ResolutionMode.ContextIndependent) {
+            block.transformStatements(integerLiteralTypeApproximator, null)
+        } else {
+            @OptIn(IntegerLiteralImplementationDetail::class)
+            block.transformAllStatementsExceptLast(
+                integerLiteralTypeApproximator,
+                ConeIntegerLiteralType.ConeIntegerLiteralApproximationToAnythingMarker
+            )
+        }
         block.transformOtherChildren(transformer, data)
 
         val resultExpression = when (val statement = block.statements.lastOrNull()) {

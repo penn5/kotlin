@@ -220,12 +220,25 @@ class ConeTypeVariableTypeConstructor(val debugName: String) : ConeClassifierLoo
 }
 
 abstract class ConeIntegerLiteralType(val value: Long) : ConeSimpleKotlinType(), TypeConstructorMarker {
+    @IntegerLiteralImplementationDetail
+    object ConeIntegerLiteralApproximationToAnythingMarker : ConeIntegerLiteralType(0) {
+        override val possibleTypes: Collection<ConeClassLikeType>
+            get() = throw IllegalStateException("Should not be called")
+        override val supertypes: List<ConeClassLikeType>
+            get() = throw IllegalStateException("Should not be called")
+
+        override fun getApproximatedType(expectedType: ConeKotlinType?): ConeClassLikeType {
+            throw IllegalStateException("Should not be called")
+        }
+    }
+
     abstract val possibleTypes: Collection<ConeClassLikeType>
     abstract val supertypes: List<ConeClassLikeType>
 
     override val typeArguments: Array<out ConeTypeProjection> = emptyArray()
     override val nullability: ConeNullability = ConeNullability.NOT_NULL
 
+    // expectedType: ConeIntegerLiteralApproximationToAnythingMarker is equal to expectedType = null
     abstract fun getApproximatedType(expectedType: ConeKotlinType? = null): ConeClassLikeType
 
     override fun equals(other: Any?): Boolean {

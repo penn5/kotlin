@@ -45,9 +45,10 @@ class ConeIntegerLiteralTypeImpl : ConeIntegerLiteralType {
         )
     }
 
+    @OptIn(IntegerLiteralImplementationDetail::class)
     override fun getApproximatedType(expectedType: ConeKotlinType?): ConeClassLikeType {
         return when (expectedType) {
-            null, !in possibleTypes -> possibleTypes.first()
+            null, ConeIntegerLiteralApproximationToAnythingMarker, !in possibleTypes -> possibleTypes.first()
             else -> expectedType as ConeClassLikeType
         }
     }
