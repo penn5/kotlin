@@ -110,8 +110,9 @@ class FirControlFlowStatementsResolveTransformer(transformer: FirBodyResolveTran
     }
 
     override fun transformWhenBranch(whenBranch: FirWhenBranch, data: ResolutionMode): CompositeTransformResult<FirWhenBranch> {
-        return whenBranch.also { dataFlowAnalyzer.enterWhenBranchCondition(whenBranch) }
+        val transformedCondition = whenBranch.also { dataFlowAnalyzer.enterWhenBranchCondition(whenBranch) }
             .transformCondition(transformer, data).also { dataFlowAnalyzer.exitWhenBranchCondition(it) }
+        return transformedCondition
             .transformResult(transformer, data).also { dataFlowAnalyzer.exitWhenBranchResult(it) }
             .compose()
     }
